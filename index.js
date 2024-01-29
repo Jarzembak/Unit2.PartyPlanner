@@ -26,3 +26,19 @@ async function getEvents() {
     console.error(error);
   }
 }
+
+async function addEvent(event) {
+  event.preventDefault();
+
+  const name = addEventForm.name.value;
+  const description = addEventForm.description.value;
+  const date = addEventForm.date.value;
+  const location = addEventForm.location.value;
+
+  await createEvent(name, description, date, location);
+}
+
+async function createEvent(name, description, date, location) {
+  try {
+  }
+}
