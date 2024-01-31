@@ -8,14 +8,12 @@ const state = {
 const eventList = document.querySelector('#events');
 const addEventForm = document.querySelector('addEvent');
 
-// addEventForm.addEventListener('submit', addEvent);
+addEventForm.addEventListener('submit', addEvent);
 
 async function render() {
   await getEvents();
   renderEvents();
 }
-
-
 
 async function getEvents() {
   try {
@@ -27,20 +25,16 @@ async function getEvents() {
   }
 }
 
-
 async function addEvent(event) {
   event.preventDefault();
 
-  const name = addEventForm.name.value;
-  const description = addEventForm.description.value;
-  const date = addEventForm.date.value;
-  const location = addEventForm.location.value;
+  const name = { name: addEventForm.name.value };
+  const description = { description: addEventForm.description.value };
+  const date = { date: addEventForm.date.value };
+  const location = { location: addEventForm.location.value };
 
-  // await createEvent(name, description, date, location);
+  await createEvent(name, description, date, location);
 }
-// TODO
-// async function createEvent(name, description, date, location) {
-//   try {
 
 async function createEvent(name, description, date, location) {
   try {
@@ -48,14 +42,19 @@ async function createEvent(name, description, date, location) {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ name, description, date, location }),
-      })
+    })
+    if (!response.ok) {
+      throw new error("Create Event Failed!")
+    }
+    render();
+    } catch (error) {
+      console.error(error);
     }
   }
 
-
 async function renderEvents() {
   if (!state.events.length) {
-    eventList.innerHTML = '<li>No recipes found.</li>'
+    eventList.innerHTML = '<li>No events found.</li>'
     return;
   }
 
