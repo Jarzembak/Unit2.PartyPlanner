@@ -6,8 +6,8 @@ const state = {
 };
 
 const eventList = document.querySelector('#events');
-const addEventForm = document.querySelector('addEvent');
-
+const addEventForm = document.querySelector('#addEvent');
+console.log(addEventForm);
 addEventForm.addEventListener('submit', addEvent);
 
 async function render() {
@@ -27,29 +27,33 @@ async function getEvents() {
 
 async function addEvent(event) {
   event.preventDefault();
+  const date = new Date(addEventForm.date.value);
+  const isoDate = date.toISOString();
+  const eventObj = {
+  name: addEventForm.name.value,
+  description: addEventForm.description.value,
+  date: isoDate,
+  location: addEventForm.location.value
+  }
 
-  const name = { name: addEventForm.name.value };
-  const description = { description: addEventForm.description.value };
-  const date = { date: addEventForm.date.value };
-  const location = { location: addEventForm.location.value };
-
-  await createEvent(name, description, date, location);
+  await createEvent(eventObj);
 }
 
-async function createEvent(name, description, date, location) {
+async function createEvent(eventObj) {
   try {
     const response = await fetch(API_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name, description, date, location }),
+      body: JSON.stringify(eventObj),
     })
     if (!response.ok) {
-      throw new error("Create Event Failed!")
+      throw new Error("Create Event Failed!")
     }
     render();
     } catch (error) {
       console.error(error);
     }
+    console.log(eventObj);
   }
 
 async function renderEvents() {
