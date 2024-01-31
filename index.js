@@ -82,7 +82,6 @@ async function renderEvents() {
     <p>${event.description}</p>
     <p>${event.date}</p>
     <p>${event.location}</p>
-    <p>${event.id}</p>
     `
     const deleteButton = eventCard.appendChild(document.createElement('button'));
     deleteButton.textContent = "Delete";
