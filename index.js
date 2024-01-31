@@ -12,7 +12,6 @@ addEventForm.addEventListener('submit', addEvent);
 async function render() {
   await getEvents();
   renderEvents();
-  console.log(state.events);
 }
 
 async function getEvents() {
@@ -44,7 +43,7 @@ async function createEvent(eventObj) {
     const response = await fetch(API_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(eventObj),
+      body: JSON.stringify(eventObj)
     })
     if (!response.ok) {
       throw new Error("Create Event Failed!")
@@ -55,8 +54,18 @@ async function createEvent(eventObj) {
   }
 }
 
-async function deleteEvent(eventID) {
-  return console.log(`delete button clicked. ID: ${eventID}`);
+async function deleteEvent(event) {
+  try {
+    const response = await fetch(`${API_URL}/${event.id}`, {
+      method: 'DELETE'
+    })
+    if (!response.ok) {
+      throw new Error("Delete Event Failed!")
+    }
+    render();
+  } catch (error) {
+    console.error(error);
+  }
 }
 
 async function renderEvents() {
@@ -77,8 +86,7 @@ async function renderEvents() {
     `
     const deleteButton = eventCard.appendChild(document.createElement('button'));
     deleteButton.textContent = "Delete";
-    const id = event.id;
-    deleteButton.addEventListener('click', () => {deleteEvent(id)});
+    deleteButton.addEventListener('click', () => {deleteEvent(event)});
 
     return eventCard;
   })
