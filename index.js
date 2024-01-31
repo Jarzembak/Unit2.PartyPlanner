@@ -42,8 +42,16 @@ async function addEvent(event) {
 // async function createEvent(name, description, date, location) {
 //   try {
 
-//   }
-// }
+async function createEvent(name, description, date, location) {
+  try {
+    const response = await fetch(API_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, description, date, location }),
+      })
+    }
+  }
+
 
 async function renderEvents() {
   if (!state.events.length) {
