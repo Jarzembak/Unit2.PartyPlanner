@@ -7,12 +7,12 @@ const state = {
 
 const eventList = document.querySelector('#events');
 const addEventForm = document.querySelector('#addEvent');
-console.log(addEventForm);
 addEventForm.addEventListener('submit', addEvent);
 
 async function render() {
   await getEvents();
   renderEvents();
+  console.log(state.events);
 }
 
 async function getEvents() {
@@ -52,9 +52,12 @@ async function createEvent(eventObj) {
     render();
     } catch (error) {
       console.error(error);
-    }
-    console.log(eventObj);
   }
+}
+
+async function deleteEvent(eventID) {
+  return console.log(`delete button clicked. ID: ${eventID}`);
+}
 
 async function renderEvents() {
   if (!state.events.length) {
@@ -70,11 +73,17 @@ async function renderEvents() {
     <p>${event.description}</p>
     <p>${event.date}</p>
     <p>${event.location}</p>
+    <p>${event.id}</p>
     `
-    return eventCard;}
-    )
-    eventList.replaceChildren(...eventCards);
-  };
-  render();
+    const deleteButton = eventCard.appendChild(document.createElement('button'));
+    deleteButton.textContent = "Delete";
+    const id = event.id;
+    deleteButton.addEventListener('click', () => {deleteEvent(id)});
+
+    return eventCard;
+  })
+  eventList.replaceChildren(...eventCards);
+};
+render();
 
 
